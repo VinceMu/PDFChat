@@ -1,0 +1,110 @@
+
+-Goal-
+Given a text document that is potentially relevant to this activity and a list of entity types, identify all entities of those types from the text and all relationships among the identified entities.
+
+-Steps-
+1. Identify all entities. For each identified entity, extract the following information:
+- entity_name: Name of the entity, capitalized
+- entity_type: One of the following types: [Employment Conditions, Freedom of Association, Collective Bargaining, Human Rights Standards, Child Labor, Forced Labor, Human Trafficking, Working Hours, Rest Periods, Workplace Health and Safety, Wages and Benefits, Harassment and Discrimination, Grievance and Remedy Process, Land Rights, Voluntary Prison Labor, International Instruments, Reporting Mechanisms, Operational-Level Grievance Management, Environmental, Health, and Safety Standards, Labor Union, Employment Agreement, Recruitment Fees, Identity Papers, Employer Pays Principle, International Covenant, Universal Declaration]
+- entity_description: Comprehensive description of the entity's attributes and activities
+Format each entity as ("entity"{tuple_delimiter}<entity_name>{tuple_delimiter}<entity_type>{tuple_delimiter}<entity_description>)
+
+2. From the entities identified in step 1, identify all pairs of (source_entity, target_entity) that are *clearly related* to each other.
+For each pair of related entities, extract the following information:
+- source_entity: name of the source entity, as identified in step 1
+- target_entity: name of the target entity, as identified in step 1
+- relationship_description: explanation as to why you think the source entity and the target entity are related to each other
+- relationship_strength: an integer score between 1 to 10, indicating strength of the relationship between the source entity and target entity
+Format each relationship as ("relationship"{tuple_delimiter}<source_entity>{tuple_delimiter}<target_entity>{tuple_delimiter}<relationship_description>{tuple_delimiter}<relationship_strength>)
+
+3. Return output in The primary language of the provided text is English. as a single list of all the entities and relationships identified in steps 1 and 2. Use **{record_delimiter}** as the list delimiter.
+
+4. If you have to translate into The primary language of the provided text is English., just translate the descriptions, nothing else!
+
+5. When finished, output {completion_delimiter}.
+
+-Examples-
+######################
+
+Example 1:
+
+entity_types: [Employment Conditions, Freedom of Association, Collective Bargaining, Human Rights Standards, Child Labor, Forced Labor, Human Trafficking, Working Hours, Rest Periods, Workplace Health and Safety, Wages and Benefits, Harassment and Discrimination, Grievance and Remedy Process, Land Rights, Voluntary Prison Labor, International Instruments, Reporting Mechanisms, Operational-Level Grievance Management, Environmental, Health, and Safety Standards, Labor Union, Employment Agreement, Recruitment Fees, Identity Papers, Employer Pays Principle, International Covenant, Universal Declaration]
+text:
+ by the worker and
+their employer.
+All workers have freedom of movement, and the conditions of employment must not restrict their
+movement through the retention of identity papers, holding of deposits, accommodation
+requirements, or any other action aimed at restricting worker mobility. Furthermore, in line with the
+Employer Pays Principle, no worker should be required to pay recruitment or other similar fees to
+secure or retain their employment. The cost of recruitment should be borne by the employer.
+3. Freedom of Association and Collective Bargaining
+PepsiCo respects our employees’ right to join or form an organization such as a labor union and to
+bargain collectively. We prohibit any form of intimidation, harassment, retaliation, or violence against
+union members, trade union representatives, and any employee seeking to exercise these rights.
+Where our employees are represented by a legally recognized union, we are committed to
+establishing a constructive dialogue and bargaining in good faith with their freely chosen
+representatives. Where the right
+------------------------
+output:
+("entity"{tuple_delimiter}FREEDOM OF MOVEMENT{tuple_delimiter}Employment Conditions{tuple_delimiter}All workers have freedom of movement, and the conditions of employment must not restrict their movement through various means such as retention of identity papers or accommodation requirements)
+{record_delimiter}
+("entity"{tuple_delimiter}IDENTITY PAPERS{tuple_delimiter}Identity Papers{tuple_delimiter}Conditions of employment must not restrict worker movement through the retention of identity papers, among other methods)
+{record_delimiter}
+("entity"{tuple_delimiter}EMPLOYER PAYS PRINCIPLE{tuple_delimiter}Employer Pays Principle{tuple_delimiter}No worker should be required to pay recruitment or other similar fees to secure or retain their employment. The cost of recruitment should be borne by the employer)
+{record_delimiter}
+("entity"{tuple_delimiter}FREEDOM OF ASSOCIATION{tuple_delimiter}Freedom of Association{tuple_delimiter}PepsiCo respects employees' right to join or form an organization such as a labor union)
+{record_delimiter}
+("entity"{tuple_delimiter}COLLECTIVE BARGAINING{tuple_delimiter}Collective Bargaining{tuple_delimiter}PepsiCo is committed to bargaining in good faith with legally recognized unions and their freely chosen representatives)
+{record_delimiter}
+("entity"{tuple_delimiter}LABOR UNION{tuple_delimiter}Labor Union{tuple_delimiter}PepsiCo employees have the right to join or form labor unions and to bargain collectively)
+{record_delimiter}
+("relationship"{tuple_delimiter}FREEDOM OF MOVEMENT{tuple_delimiter}IDENTITY PAPERS{tuple_delimiter}Freedom of movement is restricted by the retention of identity papers, among other methods{tuple_delimiter}9)
+{record_delimiter}
+("relationship"{tuple_delimiter}EMPLOYER PAYS PRINCIPLE{tuple_delimiter}IDENTITY PAPERS{tuple_delimiter}The Employer Pays Principle ensures workers are not charged recruitment fees, indirectly related to the practice of retaining identity papers to restrict movement{tuple_delimiter}5)
+{record_delimiter}
+("relationship"{tuple_delimiter}FREEDOM OF ASSOCIATION{tuple_delimiter}COLLECTIVE BARGAINING{tuple_delimiter}Freedom of Association directly supports the process of Collective Bargaining by allowing workers to form or join unions{tuple_delimiter}10)
+{record_delimiter}
+("relationship"{tuple_delimiter}FREEDOM OF ASSOCIATION{tuple_delimiter}LABOR UNION{tuple_delimiter}Freedom of Association encompasses the right to join or form a labor union{tuple_delimiter}10)
+{record_delimiter}
+("relationship"{tuple_delimiter}COLLECTIVE BARGAINING{tuple_delimiter}LABOR UNION{tuple_delimiter}Collective Bargaining is a process often carried out by labor unions on behalf of the employees{tuple_delimiter}10)
+{completion_delimiter}
+#############################
+
+
+Example 2:
+
+entity_types: [Employment Conditions, Freedom of Association, Collective Bargaining, Human Rights Standards, Child Labor, Forced Labor, Human Trafficking, Working Hours, Rest Periods, Workplace Health and Safety, Wages and Benefits, Harassment and Discrimination, Grievance and Remedy Process, Land Rights, Voluntary Prison Labor, International Instruments, Reporting Mechanisms, Operational-Level Grievance Management, Environmental, Health, and Safety Standards, Labor Union, Employment Agreement, Recruitment Fees, Identity Papers, Employer Pays Principle, International Covenant, Universal Declaration]
+text:
+ and regulations. The following standards
+are based on recognized international human rights standards and reflect the salient human rights
+issues we have identified for our value chain. Our respect for human rights is not limited to these
+standards.
+We recognize that instances may arise where national law and international human rights standards
+do not align. Where they conflict, we will comply with national law and explore alternative ways to
+respect international human rights standards to the greatest extent possible.
+1. Child Labor
+PepsiCo prohibits the use of child labor in our operations and supply chain. We prohibit the hiring of
+individuals under the age of fifteen (15) or the local legal minimum working age or the compulsory
+schooling age, whichever is higher. Younger workers may be employed through Company approved,
+
+short-term internships, apprenticeships, or work experience programs, but they are never permitted
+to perform work that may threaten their health and safety or hinder their education or vocational
+training. We require
+------------------------
+output:
+("entity"{tuple_delimiter}INTERNATIONAL HUMAN RIGHTS STANDARDS{tuple_delimiter}Human Rights Standards{tuple_delimiter}Standards based on recognized international human rights that reflect the salient human rights issues identified for the value chain. These standards guide actions where national law and international human rights standards do not align, with a commitment to comply with national law while exploring ways to respect international human rights standards to the greatest extent possible.)
+{record_delimiter}
+("entity"{tuple_delimiter}CHILD LABOR{tuple_delimiter}Child Labor{tuple_delimiter}PepsiCo prohibits the use of child labor in operations and supply chain, setting the hiring age at fifteen (15) or the local legal minimum working age or compulsory schooling age, whichever is higher. Allows for Company approved short-term internships, apprenticeships, or work experience programs under conditions that do not threaten health and safety or hinder education or vocational training.)
+{record_delimiter}
+("relationship"{tuple_delimiter}CHILD LABOR{tuple_delimiter}INTERNATIONAL HUMAN RIGHTS STANDARDS{tuple_delimiter}The prohibition of child labor by PepsiCo is in alignment with international human rights standards to protect children's rights and welfare.{tuple_delimiter}9)
+{completion_delimiter}
+#############################
+
+
+
+-Real Data-
+######################
+entity_types: [Employment Conditions, Freedom of Association, Collective Bargaining, Human Rights Standards, Child Labor, Forced Labor, Human Trafficking, Working Hours, Rest Periods, Workplace Health and Safety, Wages and Benefits, Harassment and Discrimination, Grievance and Remedy Process, Land Rights, Voluntary Prison Labor, International Instruments, Reporting Mechanisms, Operational-Level Grievance Management, Environmental, Health, and Safety Standards, Labor Union, Employment Agreement, Recruitment Fees, Identity Papers, Employer Pays Principle, International Covenant, Universal Declaration]
+text: {input_text}
+######################
+output:
